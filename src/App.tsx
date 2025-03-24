@@ -24,6 +24,8 @@ import Products from '@/pages/Products';
 import Suppliers from '@/pages/Suppliers';
 import StockEntries from '@/pages/StockEntries';
 import Reports from '@/pages/Reports';
+import Profile from '@/pages/Profile';
+import Settings from '@/pages/Settings';
 
 import './App.css';
 
@@ -55,18 +57,22 @@ function App() {
               <Route path="tanks/new" element={<TankForm />} />
               <Route path="tanks/:id/edit" element={<TankForm />} />
               
-              {/* Nouvelles routes pour les ventes */}
+              {/* Routes pour les ventes */}
               <Route path="sales" element={<Sales />} />
               <Route path="sales/new" element={<SaleForm />} />
               <Route path="sales/:id/edit" element={<SaleForm />} />
               
-              {/* Nouvelles routes pour la gestion des stocks et fournisseurs */}
+              {/* Routes pour la gestion des stocks et fournisseurs */}
               <Route path="products" element={<Products />} />
               <Route path="suppliers" element={<Suppliers />} />
               <Route path="stock-entries" element={<StockEntries />} />
               
-              {/* Nouvelle route pour les rapports */}
+              {/* Route pour les rapports */}
               <Route path="reports" element={<Reports />} />
+              
+              {/* Nouvelles routes pour le profil et les paramètres */}
+              <Route path="profile" element={<Profile />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

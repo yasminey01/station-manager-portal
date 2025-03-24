@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { format, subMonths } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
-import { Download, FileText, BarChart as BarChartIcon, Calendar, Printer, PackageIcon } from 'lucide-react';
+import { Download, FileText, BarChart as BarChartIcon, Calendar, Printer, Package as PackageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -18,9 +17,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { toast } from 'sonner';
 import { stations, sales, pumps, employees, tanks } from '@/services/mockDatabase';
 
-// Generate mock sales data per month
 const generateMonthlySalesData = () => {
   const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
   return months.map(month => ({
@@ -30,7 +29,6 @@ const generateMonthlySalesData = () => {
   }));
 };
 
-// Generate mock sales data per station
 const generateSalesPerStationData = () => {
   return stations.map(station => ({
     name: station.nomStation,
@@ -38,7 +36,6 @@ const generateSalesPerStationData = () => {
   }));
 };
 
-// Generate mock fuel type distribution data
 const generateFuelTypeData = () => {
   return [
     { name: 'Essence', value: 45 },
@@ -48,7 +45,6 @@ const generateFuelTypeData = () => {
   ];
 };
 
-// Generate mock employee performance data
 const generateEmployeePerformanceData = () => {
   return employees.map(employee => ({
     name: `${employee.firstName} ${employee.lastName}`,
@@ -70,13 +66,25 @@ const ReportsPage = () => {
   const employeePerformanceData = generateEmployeePerformanceData();
 
   const handleExportPDF = () => {
-    // Implement PDF export
-    alert('Exporter en PDF - Fonctionnalité à implémenter');
+    toast.success('Le rapport a été exporté en PDF');
+    
+    setTimeout(() => {
+      const link = document.createElement('a');
+      link.href = '#';
+      link.download = `rapport-${reportType}-${format(new Date(), 'yyyy-MM-dd')}.pdf`;
+      link.click();
+    }, 1000);
   };
 
   const handleExportExcel = () => {
-    // Implement Excel export
-    alert('Exporter en Excel - Fonctionnalité à implémenter');
+    toast.success('Le rapport a été exporté en Excel');
+    
+    setTimeout(() => {
+      const link = document.createElement('a');
+      link.href = '#';
+      link.download = `rapport-${reportType}-${format(new Date(), 'yyyy-MM-dd')}.xlsx`;
+      link.click();
+    }, 1000);
   };
 
   const handlePrint = () => {

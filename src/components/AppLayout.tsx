@@ -164,10 +164,24 @@ const MobileMenu = () => {
               </div>
             </div>
           </div>
-          <Button variant="outline" className="w-full" onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Déconnexion
-          </Button>
+          <div className="flex flex-col gap-2">
+            <SheetClose asChild>
+              <Button variant="outline" className="justify-start" onClick={() => navigate('/profile')}>
+                <User className="mr-2 h-4 w-4" />
+                Profil
+              </Button>
+            </SheetClose>
+            <SheetClose asChild>
+              <Button variant="outline" className="justify-start" onClick={() => navigate('/settings')}>
+                <Settings className="mr-2 h-4 w-4" />
+                Paramètres
+              </Button>
+            </SheetClose>
+            <Button variant="outline" className="justify-start" onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Déconnexion
+            </Button>
+          </div>
         </div>
       </SheetContent>
     </Sheet>
@@ -224,11 +238,11 @@ const AppLayout = () => {
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/profile')}>
                 <User className="mr-2 h-4 w-4" />
                 <span>Profil</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/settings')}>
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Paramètres</span>
               </DropdownMenuItem>
@@ -262,11 +276,11 @@ const AppLayout = () => {
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/profile')}>
                   <User className="mr-2 h-4 w-4" />
                   <span>Profil</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/settings')}>
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Paramètres</span>
                 </DropdownMenuItem>
