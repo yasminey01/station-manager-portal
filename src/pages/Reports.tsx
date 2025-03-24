@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { format, subMonths } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
-import { Download, FileText, BarChart as BarChartIcon, Calendar, Printer } from 'lucide-react';
+import { Download, FileText, BarChart as BarChartIcon, Calendar, Printer, PackageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -204,7 +204,7 @@ const ReportsPage = () => {
               Ventes
             </TabsTrigger>
             <TabsTrigger value="stock" className="flex items-center gap-2">
-              <Package className="h-4 w-4" />
+              <PackageIcon className="h-4 w-4" />
               Stocks
             </TabsTrigger>
             <TabsTrigger value="employees" className="flex items-center gap-2">
