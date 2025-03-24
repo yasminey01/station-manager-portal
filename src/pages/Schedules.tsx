@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { format, getWeek as getDateFnsWeek, startOfWeek, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { getEmployees, getSchedules, getStations } from '@/services/mockDatabase';
+import { employees, schedules, stations } from '@/services/mockDatabase';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -53,9 +53,9 @@ const formatTime = (time: string): string => {
 
 const Schedules = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
-  const [employees, setEmployees] = useState<Employee[]>([]);
-  const [stations, setStations] = useState<Station[]>([]);
+  const [currentSchedules, setCurrentSchedules] = useState<Schedule[]>([]);
+  const [employeesList, setEmployeesList] = useState<Employee[]>([]);
+  const [stationsList, setStationsList] = useState<Station[]>([]);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newSchedule, setNewSchedule] = useState<Partial<Schedule>>({});
   
@@ -76,16 +76,15 @@ const Schedules = () => {
   
   useEffect(() => {
     // Load data when component mounts
-    setEmployees(getEmployees());
-    setStations(getStations());
-    const allSchedules = getSchedules();
+    setEmployeesList(employees);
+    setStationsList(stations);
     
     // Filter schedules for current week
-    const filteredSchedules = allSchedules.filter(
+    const filteredSchedules = schedules.filter(
       schedule => schedule.week === currentWeek
     );
     
-    setSchedules(filteredSchedules);
+    setCurrentSchedules(filteredSchedules);
   }, [currentWeek]);
   
   const nextWeek = () => {
@@ -107,7 +106,7 @@ const Schedules = () => {
     }
     
     // Generate a simple ID for the new schedule
-    const newId = Math.max(0, ...schedules.map(s => s.idSchedule)) + 1;
+    const newId = Math.max(0, ...currentSchedules.map(s => s.idSchedule)) + 1;
     
     // Create the complete schedule object
     const completeSchedule: Schedule = {
@@ -121,7 +120,7 @@ const Schedules = () => {
     };
     
     // Add the new schedule to state
-    setSchedules(prev => [...prev, completeSchedule]);
+    setCurrentSchedules(prev => [...prev, completeSchedule]);
     
     // Reset form and close dialog
     setNewSchedule({});
@@ -130,7 +129,7 @@ const Schedules = () => {
   };
   
   const handleRemoveSchedule = (id: number) => {
-    setSchedules(prev => prev.filter(schedule => schedule.idSchedule !== id));
+    setCurrentSchedules(prev => prev.filter(schedule => schedule.idSchedule !== id));
     toast.success("Horaire supprimé avec succès");
   };
   
@@ -185,7 +184,7 @@ const Schedules = () => {
                       <SelectValue placeholder="Sélectionner un employé" />
                     </SelectTrigger>
                     <SelectContent>
-                      {employees.map(employee => (
+                      {employeesList.map(employee => (
                         <SelectItem key={employee.idEmployee} value={employee.idEmployee.toString()}>
                           {employee.firstName} {employee.lastName}
                         </SelectItem>
@@ -206,7 +205,7 @@ const Schedules = () => {
                       <SelectValue placeholder="Sélectionner une station" />
                     </SelectTrigger>
                     <SelectContent>
-                      {stations.map(station => (
+                      {stationsList.map(station => (
                         <SelectItem key={station.idStation} value={station.idStation.toString()}>
                           {station.nomStation}
                         </SelectItem>
@@ -281,7 +280,7 @@ const Schedules = () => {
               <CardDescription>{day.date}</CardDescription>
             </CardHeader>
             <CardContent className="p-3 min-h-[200px]">
-              {schedules
+              {currentSchedules
                 .filter(schedule => schedule.day === day.day)
                 .map(schedule => (
                   <div 
@@ -289,7 +288,7 @@ const Schedules = () => {
                     className={`mb-2 p-2 text-xs rounded border ${getEmployeeColor(schedule.idEmployee)}`}
                   >
                     <div className="flex justify-between items-start">
-                      <div className="font-medium">{getEmployeeName(employees, schedule.idEmployee)}</div>
+                      <div className="font-medium">{getEmployeeName(employeesList, schedule.idEmployee)}</div>
                       <Button 
                         variant="ghost" 
                         size="icon" 
@@ -304,7 +303,7 @@ const Schedules = () => {
                       <span>{formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}</span>
                     </div>
                     <div className="mt-1 text-[10px] opacity-80">
-                      {getStationName(stations, schedule.idStation)}
+                      {getStationName(stationsList, schedule.idStation)}
                     </div>
                   </div>
                 ))}
