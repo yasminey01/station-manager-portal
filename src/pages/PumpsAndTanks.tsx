@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -294,7 +293,7 @@ const PumpsAndTanks = () => {
                                 tank.statut === 'actif' 
                                   ? 'default' 
                                   : tank.statut === 'maintenance' 
-                                    ? 'warning' 
+                                    ? 'secondary' 
                                     : 'destructive'
                               }
                             >
@@ -350,7 +349,6 @@ const PumpsAndTanks = () => {
         </TabsContent>
       </Tabs>
 
-      {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
