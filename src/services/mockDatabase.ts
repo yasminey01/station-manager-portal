@@ -1,4 +1,3 @@
-
 import { Station, Employee, Schedule, Service, Tank, Pump, DashboardStats } from '@/types';
 
 // Mock data for stations
@@ -282,32 +281,42 @@ export const pumps: Pump[] = [
   {
     idPompe: 1,
     nomPompe: 'P1-Essence',
+    numero: 1,
     statut: 'actif',
-    debit: 40
+    debit: 40,
+    idStation: 1
   },
   {
     idPompe: 2,
     nomPompe: 'P2-Diesel',
+    numero: 2,
     statut: 'actif',
-    debit: 45
+    debit: 45,
+    idStation: 1
   },
   {
     idPompe: 3,
     nomPompe: 'P3-Sans Plomb',
+    numero: 1,
     statut: 'inactif',
-    debit: 38
+    debit: 38,
+    idStation: 2
   },
   {
     idPompe: 4,
     nomPompe: 'P4-Diesel Premium',
+    numero: 1,
     statut: 'actif',
-    debit: 42
+    debit: 42,
+    idStation: 3
   },
   {
     idPompe: 5,
     nomPompe: 'P5-Essence',
+    numero: 1,
     statut: 'actif',
-    debit: 40
+    debit: 40,
+    idStation: 4
   }
 ];
 
@@ -318,35 +327,45 @@ export const tanks: Tank[] = [
     capacite: 20000,
     dateInstallation: '2018-05-10',
     typeCarburant: 'Essence',
-    statut: 'actif'
+    statut: 'actif',
+    idStation: 1,
+    niveauActuel: 15000
   },
   {
     idCiterne: 2,
     capacite: 25000,
     dateInstallation: '2018-05-10',
     typeCarburant: 'Diesel',
-    statut: 'actif'
+    statut: 'actif',
+    idStation: 1,
+    niveauActuel: 20000
   },
   {
     idCiterne: 3,
     capacite: 15000,
     dateInstallation: '2019-03-15',
     typeCarburant: 'Sans Plomb',
-    statut: 'actif'
+    statut: 'actif',
+    idStation: 2,
+    niveauActuel: 5000
   },
   {
     idCiterne: 4,
     capacite: 20000,
     dateInstallation: '2020-01-20',
     typeCarburant: 'Diesel Premium',
-    statut: 'actif'
+    statut: 'actif',
+    idStation: 3,
+    niveauActuel: 12000
   },
   {
     idCiterne: 5,
     capacite: 10000,
     dateInstallation: '2021-02-05',
     typeCarburant: 'Essence',
-    statut: 'maintenance'
+    statut: 'maintenance',
+    idStation: 4,
+    niveauActuel: 2000
   }
 ];
 
@@ -402,14 +421,12 @@ export const getServicesByStationId = (stationId: number): Service[] => {
 
 // Helper function to get pumps for a station
 export const getPumpsByStationId = (stationId: number): Pump[] => {
-  const pumpIds = stationPumps[stationId] || [];
-  return pumps.filter(pump => pumpIds.includes(pump.idPompe));
+  return pumps.filter(pump => pump.idStation === stationId);
 };
 
 // Helper function to get tanks for a station
 export const getTanksByStationId = (stationId: number): Tank[] => {
-  const tankIds = stationTanks[stationId] || [];
-  return tanks.filter(tank => tankIds.includes(tank.idCiterne));
+  return tanks.filter(tank => tank.idStation === stationId);
 };
 
 // Helper function to get employees for a station
@@ -437,3 +454,14 @@ export const getSchedulesByStationId = (stationId: number): Schedule[] => {
 export const getSchedulesByEmployeeId = (employeeId: number): Schedule[] => {
   return schedules.filter(schedule => schedule.idEmployee === employeeId);
 };
+
+// Helper function to get pump by id
+export const getPumpById = (pumpId: number): Pump | undefined => {
+  return pumps.find(pump => pump.idPompe === pumpId);
+};
+
+// Helper function to get tank by id
+export const getTankById = (tankId: number): Tank | undefined => {
+  return tanks.find(tank => tank.idCiterne === tankId);
+};
+

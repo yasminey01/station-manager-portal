@@ -51,6 +51,11 @@ const SIDEBAR_LINKS = [
     path: '/schedules',
     label: 'Planification',
     icon: <Calendar className="h-5 w-5" />
+  },
+  {
+    path: '/pumps-and-tanks',
+    label: 'Pompes & Citernes',
+    icon: <Fuel className="h-5 w-5" />
   }
 ];
 

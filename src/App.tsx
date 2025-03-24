@@ -1,96 +1,61 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { Toaster } from '@/components/ui/sonner';
 
-// Pages
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Stations from "./pages/Stations";
-import StationDetail from "./pages/StationDetail";
-import StationForm from "./pages/StationForm";
-import Employees from "./pages/Employees";
-import EmployeeDetail from "./pages/EmployeeDetail";
-import EmployeeForm from "./pages/EmployeeForm";
-import Schedules from "./pages/Schedules";
-import NotFound from "./pages/NotFound";
-import AppLayout from "./components/AppLayout";
+import AppLayout from '@/components/AppLayout';
+import Login from '@/pages/Login';
+import NotFound from '@/pages/NotFound';
+import Dashboard from '@/pages/Dashboard';
+import Stations from '@/pages/Stations';
+import StationDetail from '@/pages/StationDetail';
+import StationForm from '@/pages/StationForm';
+import Employees from '@/pages/Employees';
+import EmployeeDetail from '@/pages/EmployeeDetail';
+import EmployeeForm from '@/pages/EmployeeForm';
+import Schedules from '@/pages/Schedules';
+import PumpsAndTanks from '@/pages/PumpsAndTanks';
+import PumpForm from '@/pages/PumpForm';
+import TankForm from '@/pages/TankForm';
 
+import './App.css';
+
+// Create a client
 const queryClient = new QueryClient();
 
-// ProtectedRoute component
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="animate-pulse h-8 w-8 rounded-full bg-primary/40"></div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return <>{children}</>;
-};
-
-const AppRoutes = () => {
-  const { isAuthenticated } = useAuth();
-
+function App() {
   return (
-    <Routes>
-      <Route path="/login" element={
-        isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />
-      } />
-      
-      <Route path="/" element={
-        <ProtectedRoute>
-          <AppLayout />
-        </ProtectedRoute>
-      }>
-        <Route index element={<Navigate to="/dashboard" replace />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        
-        <Route path="stations">
-          <Route index element={<Stations />} />
-          <Route path="new" element={<StationForm />} />
-          <Route path=":id" element={<StationDetail />} />
-          <Route path=":id/edit" element={<StationForm />} />
-        </Route>
-        
-        <Route path="employees">
-          <Route index element={<Employees />} />
-          <Route path="new" element={<EmployeeForm />} />
-          <Route path=":id" element={<EmployeeDetail />} />
-          <Route path=":id/edit" element={<EmployeeForm />} />
-        </Route>
-        
-        <Route path="schedules" element={<Schedules />} />
-      </Route>
-      
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<AppLayout />}>
+              <Route index element={<Navigate to="/dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="stations" element={<Stations />} />
+              <Route path="stations/:id" element={<StationDetail />} />
+              <Route path="stations/new" element={<StationForm />} />
+              <Route path="stations/:id/edit" element={<StationForm />} />
+              <Route path="employees" element={<Employees />} />
+              <Route path="employees/:id" element={<EmployeeDetail />} />
+              <Route path="employees/new" element={<EmployeeForm />} />
+              <Route path="employees/:id/edit" element={<EmployeeForm />} />
+              <Route path="schedules" element={<Schedules />} />
+              <Route path="pumps-and-tanks" element={<PumpsAndTanks />} />
+              <Route path="pumps/new" element={<PumpForm />} />
+              <Route path="pumps/:id/edit" element={<PumpForm />} />
+              <Route path="tanks/new" element={<TankForm />} />
+              <Route path="tanks/:id/edit" element={<TankForm />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Toaster />
+        </AuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
-};
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AuthProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </AuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+}
 
 export default App;

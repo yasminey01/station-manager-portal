@@ -1,4 +1,3 @@
-
 // User types
 export interface User {
   id: number;
@@ -63,8 +62,10 @@ export interface Service {
 export interface Pump {
   idPompe: number;
   nomPompe: string;
+  numero?: number;
   statut: string;
   debit: number;
+  idStation?: number;
 }
 
 // Tank types
@@ -74,6 +75,8 @@ export interface Tank {
   dateInstallation: string;
   typeCarburant: string;
   statut: string;
+  idStation?: number;
+  niveauActuel?: number;
 }
 
 // Supplier types
@@ -114,9 +117,12 @@ export interface FuelVerification {
 // Sales types
 export interface Sale {
   idVente: number;
+  idPompe?: number;
+  idEmployee?: number;
   quantiteVente: number;
   dateVente: string;
-  modePaiement: string;
+  modePaiement: 'Espèces' | 'Carte' | 'Virement';
+  montant?: number;
 }
 
 // Pricing types
@@ -140,4 +146,14 @@ export interface ApiResponse<T> {
   success: boolean;
   data?: T;
   error?: string;
+}
+
+// Stock Entry types
+export interface StockEntry {
+  idEntree: number;
+  idProduct: number;
+  idFournisseur?: number;
+  dateEntree: string;
+  quantite: number;
+  prixAchat: number;
 }
