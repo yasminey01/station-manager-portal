@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -13,7 +12,11 @@ import {
   X, 
   ChevronDown,
   User,
-  Settings
+  Settings,
+  ShoppingCart,
+  Package,
+  Truck,
+  BarChart
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -56,6 +59,31 @@ const SIDEBAR_LINKS = [
     path: '/pumps-and-tanks',
     label: 'Pompes & Citernes',
     icon: <Fuel className="h-5 w-5" />
+  },
+  {
+    path: '/sales',
+    label: 'Ventes',
+    icon: <ShoppingCart className="h-5 w-5" />
+  },
+  {
+    path: '/products',
+    label: 'Produits',
+    icon: <Package className="h-5 w-5" />
+  },
+  {
+    path: '/suppliers',
+    label: 'Fournisseurs',
+    icon: <Truck className="h-5 w-5" />
+  },
+  {
+    path: '/stock-entries',
+    label: 'Entrées de stock',
+    icon: <Package className="h-5 w-5" />
+  },
+  {
+    path: '/reports',
+    label: 'Rapports',
+    icon: <BarChart className="h-5 w-5" />
   }
 ];
 
@@ -164,7 +192,6 @@ const AppLayout = () => {
   
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Sidebar - Desktop Only */}
       <aside className="hidden md:flex md:w-64 lg:w-72 border-r flex-col h-screen sticky top-0">
         <div className="p-6 border-b">
           <h1 className="text-xl font-semibold text-primary">StationManager</h1>
@@ -215,16 +242,13 @@ const AppLayout = () => {
         </div>
       </aside>
       
-      {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen">
-        {/* Header - Mobile Only */}
         <header className="h-16 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-30 flex items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-2">
             <MobileMenu />
             <h1 className="text-lg font-semibold md:hidden">StationManager</h1>
           </div>
           
-          {/* User Menu - Mobile Only */}
           <div className="md:hidden">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -256,7 +280,6 @@ const AppLayout = () => {
           </div>
         </header>
         
-        {/* Content */}
         <main className="flex-1 p-4 md:p-6 lg:p-8 animate-fade-in">
           <Outlet />
         </main>
