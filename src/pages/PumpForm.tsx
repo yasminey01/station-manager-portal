@@ -245,7 +245,7 @@ const PumpForm = () => {
                           <SelectValue placeholder="Sélectionnez une station" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">Non assigné</SelectItem>
+                          <SelectItem value="non_assigne">Non assigné</SelectItem>
                           {stations.map(station => (
                             <SelectItem key={station.idStation} value={station.idStation.toString()}>
                               {station.nomStation}
