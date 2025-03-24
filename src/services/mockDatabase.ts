@@ -1,4 +1,4 @@
-import { Station, Employee, Schedule, Service, Tank, Pump, DashboardStats } from '@/types';
+import { Station, Employee, Schedule, Service, Tank, Pump, DashboardStats, Sale, Product, Supplier, StockEntry } from '@/types';
 
 // Mock data for stations
 export const stations: Station[] = [
@@ -369,6 +369,187 @@ export const tanks: Tank[] = [
   }
 ];
 
+// Mock data for sales
+export const sales: Sale[] = [
+  {
+    idVente: 1,
+    idPompe: 1,
+    idEmployee: 1,
+    quantiteVente: 45.5,
+    dateVente: '2023-09-10T08:15:00',
+    modePaiement: 'Espèces',
+    montant: 675.4
+  },
+  {
+    idVente: 2,
+    idPompe: 2,
+    idEmployee: 2,
+    quantiteVente: 30.0,
+    dateVente: '2023-09-10T10:25:00',
+    modePaiement: 'Carte',
+    montant: 444.0
+  },
+  {
+    idVente: 3,
+    idPompe: 3,
+    idEmployee: 3,
+    quantiteVente: 60.0,
+    dateVente: '2023-09-11T14:05:00',
+    modePaiement: 'Virement',
+    montant: 888.0
+  },
+  {
+    idVente: 4,
+    idPompe: 4,
+    idEmployee: 4,
+    quantiteVente: 25.5,
+    dateVente: '2023-09-12T16:45:00',
+    modePaiement: 'Espèces',
+    montant: 377.4
+  },
+  {
+    idVente: 5,
+    idPompe: 5,
+    idEmployee: 5,
+    quantiteVente: 40.0,
+    dateVente: '2023-09-13T12:30:00',
+    modePaiement: 'Carte',
+    montant: 592.0
+  }
+];
+
+// Mock data for products
+export const products: Product[] = [
+  {
+    idProduct: 1,
+    nomProduit: 'Essence Sans Plomb 95',
+    type: 'Carburant',
+    date_ajout: '2022-01-15',
+    unite: 'Litre'
+  },
+  {
+    idProduct: 2,
+    nomProduit: 'Diesel Premium',
+    type: 'Carburant',
+    date_ajout: '2022-01-15',
+    unite: 'Litre'
+  },
+  {
+    idProduct: 3,
+    nomProduit: 'Huile Moteur 10W40',
+    type: 'Lubrifiant',
+    date_ajout: '2022-02-20',
+    unite: 'Litre'
+  },
+  {
+    idProduct: 4,
+    nomProduit: 'Lave-glace',
+    type: 'Accessoire',
+    date_ajout: '2022-03-10',
+    unite: 'Litre'
+  },
+  {
+    idProduct: 5,
+    nomProduit: 'Additif Carburant',
+    type: 'Accessoire',
+    date_ajout: '2022-04-05',
+    unite: 'Pièce'
+  }
+];
+
+// Mock data for stock entries
+export const stockEntries: StockEntry[] = [
+  {
+    idEntree: 1,
+    idProduct: 1,
+    idFournisseur: 1,
+    dateEntree: '2023-08-10',
+    quantite: 5000,
+    prixAchat: 10.5
+  },
+  {
+    idEntree: 2,
+    idProduct: 2,
+    idFournisseur: 1,
+    dateEntree: '2023-08-10',
+    quantite: 5000,
+    prixAchat: 11.2
+  },
+  {
+    idEntree: 3,
+    idProduct: 3,
+    idFournisseur: 2,
+    dateEntree: '2023-08-15',
+    quantite: 200,
+    prixAchat: 25.0
+  },
+  {
+    idEntree: 4,
+    idProduct: 4,
+    idFournisseur: 3,
+    dateEntree: '2023-08-20',
+    quantite: 300,
+    prixAchat: 5.5
+  },
+  {
+    idEntree: 5,
+    idProduct: 5,
+    idFournisseur: 3,
+    dateEntree: '2023-08-25',
+    quantite: 150,
+    prixAchat: 8.0
+  }
+];
+
+// Mock data for suppliers
+export const suppliers: Supplier[] = [
+  {
+    idFournisseur: 1,
+    nomFournisseur: 'PétroMaroc',
+    adresseFournisseur: '123 Avenue Hassan II, Casablanca',
+    telephoneFournisseur: '+212 522 123 456',
+    emailFournisseur: 'contact@petromaroc.ma',
+    typeFournisseur: 'Carburant',
+    contactFournisseur: 'Mohammed Alami'
+  },
+  {
+    idFournisseur: 2,
+    nomFournisseur: 'LubriTech',
+    adresseFournisseur: '45 Rue Mohammed V, Rabat',
+    telephoneFournisseur: '+212 537 456 789',
+    emailFournisseur: 'info@lubritech.ma',
+    typeFournisseur: 'Lubrifiant',
+    contactFournisseur: 'Fatima Benali'
+  },
+  {
+    idFournisseur: 3,
+    nomFournisseur: 'AutoAccessoires',
+    adresseFournisseur: '78 Boulevard Zerktouni, Marrakech',
+    telephoneFournisseur: '+212 524 789 123',
+    emailFournisseur: 'ventes@autoaccessoires.ma',
+    typeFournisseur: 'Accessoire',
+    contactFournisseur: 'Ahmed Tazi'
+  },
+  {
+    idFournisseur: 4,
+    nomFournisseur: 'PiècesDétachées',
+    adresseFournisseur: '12 Avenue Moulay Ismail, Tanger',
+    telephoneFournisseur: '+212 539 234 567',
+    emailFournisseur: 'service@piecesdetachees.ma',
+    typeFournisseur: 'Pièce',
+    contactFournisseur: 'Karim Zouaoui'
+  },
+  {
+    idFournisseur: 5,
+    nomFournisseur: 'GazMaroc',
+    adresseFournisseur: '56 Rue Abdelmoumen, Fès',
+    telephoneFournisseur: '+212 535 678 901',
+    emailFournisseur: 'contact@gazmaroc.ma',
+    typeFournisseur: 'Gaz',
+    contactFournisseur: 'Leila Chaoui'
+  }
+];
+
 // Dashboard stats
 export const dashboardStats: DashboardStats = {
   totalStations: stations.length,
@@ -465,3 +646,44 @@ export const getTankById = (tankId: number): Tank | undefined => {
   return tanks.find(tank => tank.idCiterne === tankId);
 };
 
+// Helper function to get sales by station id
+export const getSalesByStationId = (stationId: number): Sale[] => {
+  const stationPumps = pumps.filter(pump => pump.idStation === stationId);
+  const pumpIds = stationPumps.map(pump => pump.idPompe);
+  return sales.filter(sale => sale.idPompe && pumpIds.includes(sale.idPompe));
+};
+
+// Helper function to get sales by employee id
+export const getSalesByEmployeeId = (employeeId: number): Sale[] => {
+  return sales.filter(sale => sale.idEmployee === employeeId);
+};
+
+// Helper function to get sales by pump id
+export const getSalesByPumpId = (pumpId: number): Sale[] => {
+  return sales.filter(sale => sale.idPompe === pumpId);
+};
+
+// Helper function to get sale by id
+export const getSaleById = (saleId: number): Sale | undefined => {
+  return sales.find(sale => sale.idVente === saleId);
+};
+
+// Helper function to get product by id
+export const getProductById = (productId: number): Product | undefined => {
+  return products.find(product => product.idProduct === productId);
+};
+
+// Helper function to get supplier by id
+export const getSupplierById = (supplierId: number): Supplier | undefined => {
+  return suppliers.find(supplier => supplier.idFournisseur === supplierId);
+};
+
+// Helper function to get stock entries by product id
+export const getStockEntriesByProductId = (productId: number): StockEntry[] => {
+  return stockEntries.filter(entry => entry.idProduct === productId);
+};
+
+// Helper function to get stock entries by supplier id
+export const getStockEntriesBySupplierID = (supplierId: number): StockEntry[] => {
+  return stockEntries.filter(entry => entry.idFournisseur === supplierId);
+};
