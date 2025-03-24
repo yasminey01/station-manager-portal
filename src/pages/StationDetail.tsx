@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -38,7 +37,7 @@ import {
   CheckCircle, 
   XCircle,
   Users,
-  GasPump,
+  Fuel,
   Droplets
 } from 'lucide-react';
 import { Station, Service, Pump, Tank, Employee } from '@/types';
@@ -218,7 +217,7 @@ const StationDetail = () => {
                   Employés
                 </TabsTrigger>
                 <TabsTrigger value="pumps">
-                  <GasPump className="h-4 w-4 mr-2" />
+                  <Fuel className="h-4 w-4 mr-2" />
                   Pompes
                 </TabsTrigger>
                 <TabsTrigger value="tanks">
@@ -316,7 +315,7 @@ const StationDetail = () => {
                   </div>
                 )}
                 <Button variant="outline" className="w-full">
-                  <GasPump className="mr-2 h-4 w-4" />
+                  <Fuel className="mr-2 h-4 w-4" />
                   Gérer les pompes
                 </Button>
               </TabsContent>

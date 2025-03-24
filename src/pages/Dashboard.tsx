@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ArrowUpRight, 
-  GasPump, 
+  Fuel, 
   Users, 
   Wallet,
   TrendingUp,
@@ -134,7 +133,7 @@ const Dashboard = () => {
           title="Stations"
           value={dashboardStats.totalStations}
           description={`${dashboardStats.activeStations} actives`}
-          icon={<GasPump className="h-4 w-4" />}
+          icon={<Fuel className="h-4 w-4" />}
           trend={2.5}
           link="/stations"
         />
@@ -254,7 +253,7 @@ const Dashboard = () => {
               <div key={index} className="space-y-1">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <GasPump className="h-4 w-4 text-muted-foreground" />
+                    <Fuel className="h-4 w-4 text-muted-foreground" />
                     <span>{fuel.name}</span>
                   </div>
                   <span className={cn(

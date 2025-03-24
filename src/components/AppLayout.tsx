@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
   LayoutDashboard, 
-  GasPump, 
+  Fuel, 
   Users, 
   Calendar, 
   LogOut, 
@@ -40,7 +40,7 @@ const SIDEBAR_LINKS = [
   {
     path: '/stations',
     label: 'Stations',
-    icon: <GasPump className="h-5 w-5" />
+    icon: <Fuel className="h-5 w-5" />
   },
   {
     path: '/employees',

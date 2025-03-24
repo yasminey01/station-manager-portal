@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { GasPump, Loader2 } from 'lucide-react';
+import { Fuel, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 const formSchema = z.object({
@@ -61,7 +61,7 @@ const Login = () => {
         <div className="animate-slide-up space-y-6 rounded-lg border bg-card p-8 shadow-soft">
           <div className="flex flex-col items-center space-y-2 text-center">
             <div className="rounded-full bg-primary/10 p-3">
-              <GasPump className="h-6 w-6 text-primary" />
+              <Fuel className="h-6 w-6 text-primary" />
             </div>
             <h1 className="text-2xl font-semibold tracking-tight">Connexion</h1>
             <p className="text-sm text-muted-foreground">
