@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { authService } from '@/services/auth.service';
+import { useEmployeeAuth } from '@/contexts/EmployeeAuthContext';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import {
@@ -22,10 +21,11 @@ import {
 } from '@/components/ui/table';
 import { Calendar } from '@/components/ui/calendar';
 import { toast } from 'sonner';
-import { Loader2, UserCheck, UserX } from 'lucide-react';
+import { Loader2, UserCheck, UserX, Clock } from 'lucide-react';
+import { authService } from '@/services/auth.service';
 
 const EmployeeAttendance = () => {
-  const { user } = useAuth();
+  const { employee } = useEmployeeAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isCheckingIn, setIsCheckingIn] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -33,7 +33,7 @@ const EmployeeAttendance = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const loadAttendance = async () => {
-    if (!user?.id) return;
+    if (!employee?.idEmployee) return;
     
     setIsLoading(true);
     try {
@@ -44,7 +44,7 @@ const EmployeeAttendance = () => {
       const endDateStr = format(endOfMonth, 'yyyy-MM-dd');
       
       const response = await authService.getEmployeeAttendance(
-        user.id, 
+        employee.idEmployee, 
         startDateStr,
         endDateStr
       );
@@ -63,55 +63,46 @@ const EmployeeAttendance = () => {
   };
 
   useEffect(() => {
-    loadAttendance();
-  }, [user?.id, selectedDate]);
+    if (employee?.idEmployee) {
+      loadAttendance();
+    }
+  }, [employee?.idEmployee, selectedDate]);
+
+  const { checkIn, checkOut } = useEmployeeAuth();
 
   const handleCheckIn = async () => {
-    if (!user?.id) return;
-    
     setIsCheckingIn(true);
     try {
-      const response = await authService.checkInEmployee(user.id);
-      
-      if (response.success) {
-        toast.success("Pointage d'entrée enregistré avec succès");
+      const success = await checkIn();
+      if (success) {
         loadAttendance();
-      } else {
-        toast.error(response.error || "Erreur lors du pointage d'entrée");
       }
-    } catch (error) {
-      console.error("Failed to check in:", error);
-      toast.error("Erreur lors du pointage d'entrée");
     } finally {
       setIsCheckingIn(false);
     }
   };
 
   const handleCheckOut = async () => {
-    if (!user?.id) return;
-    
     setIsCheckingOut(true);
     try {
-      const response = await authService.checkOutEmployee(user.id);
-      
-      if (response.success) {
-        toast.success("Pointage de sortie enregistré avec succès");
+      const success = await checkOut();
+      if (success) {
         loadAttendance();
-      } else {
-        toast.error(response.error || "Erreur lors du pointage de sortie");
       }
-    } catch (error) {
-      console.error("Failed to check out:", error);
-      toast.error("Erreur lors du pointage de sortie");
     } finally {
       setIsCheckingOut(false);
     }
   };
 
+  const formatTimeFromISO = (isoString: string) => {
+    if (!isoString) return '-';
+    return format(new Date(isoString), 'HH:mm:ss');
+  };
+
   const today = format(new Date(), 'yyyy-MM-dd');
-  const todayAttendance = attendance.find(a => a.date === today);
-  const canCheckIn = !todayAttendance?.checkIn;
-  const canCheckOut = todayAttendance?.checkIn && !todayAttendance?.checkOut;
+  const todayAttendance = attendance.find(a => format(new Date(a.date), 'yyyy-MM-dd') === today);
+  const canCheckIn = employee?.isPresent === false;
+  const canCheckOut = employee?.isPresent === true;
 
   return (
     <div className="space-y-6">
@@ -148,7 +139,7 @@ const EmployeeAttendance = () => {
                 </TableHeader>
                 <TableBody>
                   {attendance.map((record) => (
-                    <TableRow key={record.id}>
+                    <TableRow key={record._id}>
                       <TableCell>{format(new Date(record.date), 'dd/MM/yyyy')}</TableCell>
                       <TableCell>
                         <div className="flex items-center">
@@ -159,7 +150,7 @@ const EmployeeAttendance = () => {
                             </>
                           ) : record.status === 'late' ? (
                             <>
-                              <UserCheck className="mr-2 h-4 w-4 text-amber-500" />
+                              <Clock className="mr-2 h-4 w-4 text-amber-500" />
                               <span>En retard</span>
                             </>
                           ) : (
@@ -170,8 +161,8 @@ const EmployeeAttendance = () => {
                           )}
                         </div>
                       </TableCell>
-                      <TableCell>{record.checkIn || '-'}</TableCell>
-                      <TableCell>{record.checkOut || '-'}</TableCell>
+                      <TableCell>{formatTimeFromISO(record.checkIn)}</TableCell>
+                      <TableCell>{formatTimeFromISO(record.checkOut)}</TableCell>
                       <TableCell>{record.comments || '-'}</TableCell>
                     </TableRow>
                   ))}
@@ -246,8 +237,8 @@ const EmployeeAttendance = () => {
                 {todayAttendance && (
                   <div className="rounded-md border p-4 text-sm">
                     <p><strong>Statut:</strong> {todayAttendance.status === 'present' ? 'Présent' : todayAttendance.status === 'late' ? 'En retard' : 'Absent'}</p>
-                    {todayAttendance.checkIn && <p><strong>Arrivée:</strong> {todayAttendance.checkIn}</p>}
-                    {todayAttendance.checkOut && <p><strong>Départ:</strong> {todayAttendance.checkOut}</p>}
+                    {todayAttendance.checkIn && <p><strong>Arrivée:</strong> {formatTimeFromISO(todayAttendance.checkIn)}</p>}
+                    {todayAttendance.checkOut && <p><strong>Départ:</strong> {formatTimeFromISO(todayAttendance.checkOut)}</p>}
                   </div>
                 )}
               </div>

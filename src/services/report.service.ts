@@ -93,44 +93,95 @@ export const reportService = {
     return workbook;
   },
   
-  // Autres fonctions pour générer des rapports pour d'autres entités
-  generateEmployeesPDF: (employees: Employee[]) => {
-    // Implémenter la génération de rapport PDF pour les employés
+  // Téléchargement de PDF
+  downloadPDF: (doc: jsPDF, filename: string) => {
+    try {
+      doc.save(filename);
+    } catch (error) {
+      console.error('Erreur lors du téléchargement du PDF:', error);
+      throw error;
+    }
+  },
+  
+  // Téléchargement d'Excel
+  downloadExcel: (workbook: XLSX.WorkBook, filename: string) => {
+    try {
+      XLSX.writeFile(workbook, filename);
+    } catch (error) {
+      console.error('Erreur lors du téléchargement du fichier Excel:', error);
+      throw error;
+    }
+  },
+  
+  // Fonctions pour générer des rapports pour d'autres entités
+  generateEmployeesPDF: (employees: Employee[], title: string = 'Rapport des employés') => {
     const doc = new jsPDF();
-    // ... logique similaire à generateSalesPDF
+    
+    // Titre
+    doc.setFontSize(18);
+    doc.text(title, 14, 22);
+    
+    // Date du rapport
+    doc.setFontSize(11);
+    doc.text(`Généré le ${format(new Date(), 'dd/MM/yyyy à HH:mm', { locale: fr })}`, 14, 30);
+    
+    // Données pour le tableau
+    const body = employees.map((employee, index) => [
+      (index + 1).toString(),
+      employee.firstName,
+      employee.lastName,
+      employee.email,
+      employee.phone || 'N/A',
+      employee.role,
+      employee.status,
+    ]);
+    
+    // Configuration du tableau
+    doc.autoTable({
+      startY: 40,
+      head: [['#', 'Prénom', 'Nom', 'Email', 'Téléphone', 'Rôle', 'Statut']],
+      body: body,
+      theme: 'striped',
+      headStyles: { fillColor: [41, 128, 185], textColor: 255 },
+      footStyles: { fillColor: [41, 128, 185], textColor: 255 },
+      alternateRowStyles: { fillColor: [240, 240, 240] },
+    });
+    
+    // Pagination
+    const totalPages = doc.getNumberOfPages();
+    for (let i = 1; i <= totalPages; i++) {
+      doc.setPage(i);
+      doc.setFontSize(10);
+      doc.text(`Page ${i} sur ${totalPages}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 10);
+    }
+    
     return doc;
   },
   
+  // Utilisez le même modèle pour d'autres types de rapports
   generateStationsPDF: (stations: Station[]) => {
-    // Implémenter la génération de rapport PDF pour les stations
     const doc = new jsPDF();
-    // ... logique similaire à generateSalesPDF
+    // ... Implémentation similaire à generateEmployeesPDF
     return doc;
   },
   
   generateProductsPDF: (products: Product[]) => {
-    // Implémenter la génération de rapport PDF pour les produits
     const doc = new jsPDF();
-    // ... logique similaire à generateSalesPDF
+    // ... Implémentation similaire à generateEmployeesPDF
     return doc;
   },
   
   generateSuppliersPDF: (suppliers: Supplier[]) => {
-    // Implémenter la génération de rapport PDF pour les fournisseurs
     const doc = new jsPDF();
-    // ... logique similaire à generateSalesPDF
+    // ... Implémentation similaire à generateEmployeesPDF
     return doc;
   },
   
   generateStockEntriesPDF: (stockEntries: StockEntry[]) => {
-    // Implémenter la génération de rapport PDF pour les entrées de stock
     const doc = new jsPDF();
-    // ... logique similaire à generateSalesPDF
+    // ... Implémentation similaire à generateEmployeesPDF
     return doc;
   },
-  
-  // Fonctions similaires pour générer des rapports Excel pour d'autres entités
-  // ...
 };
 
 export default reportService;

@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -15,7 +15,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Fuel, Loader2 } from 'lucide-react';
+import { 
+  Tabs, 
+  TabsContent, 
+  TabsList, 
+  TabsTrigger 
+} from "@/components/ui/tabs";
+import { Fuel, Loader2, User } from 'lucide-react';
 import { toast } from 'sonner';
 
 const formSchema = z.object({
@@ -27,6 +33,7 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("admin");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,6 +46,13 @@ const Login = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setIsLoading(true);
+      
+      if (activeTab === "employee") {
+        // Rediriger vers la page de connexion employé
+        navigate('/employee/login', { state: { email: values.email, password: values.password } });
+        return;
+      }
+      
       await login(values.email, values.password);
       navigate('/dashboard');
     } catch (error) {
@@ -69,66 +83,139 @@ const Login = () => {
             </p>
           </div>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="nom@exemple.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Mot de passe</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="••••••••" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button disabled={isLoading} className="w-full" type="submit">
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Connexion en cours...
-                  </>
-                ) : (
-                  "Se connecter"
-                )}
-              </Button>
-            </form>
-          </Form>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="admin" className="flex items-center">
+                <Fuel className="h-4 w-4 mr-2" />
+                Admin / Manager
+              </TabsTrigger>
+              <TabsTrigger value="employee" className="flex items-center">
+                <User className="h-4 w-4 mr-2" />
+                Employé
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="admin" className="mt-4">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input placeholder="nom@exemple.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Mot de passe</FormLabel>
+                        <FormControl>
+                          <Input type="password" placeholder="••••••••" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button disabled={isLoading} className="w-full" type="submit">
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Connexion en cours...
+                      </>
+                    ) : (
+                      "Se connecter"
+                    )}
+                  </Button>
+                </form>
+              </Form>
 
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t"></span>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                Comptes de démonstration
-              </span>
-            </div>
-          </div>
+              <div className="relative mt-4">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t"></span>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-card px-2 text-muted-foreground">
+                    Comptes de démonstration
+                  </span>
+                </div>
+              </div>
 
-          <div className="grid gap-2">
-            <Button variant="outline" type="button" onClick={() => demoLogin('admin@example.com')}>
-              Accès Administrateur
-            </Button>
-            <Button variant="outline" type="button" onClick={() => demoLogin('manager@example.com')}>
-              Accès Gestionnaire
-            </Button>
-          </div>
+              <div className="grid gap-2 mt-4">
+                <Button variant="outline" type="button" onClick={() => demoLogin('admin@example.com')}>
+                  Accès Administrateur
+                </Button>
+                <Button variant="outline" type="button" onClick={() => demoLogin('manager@example.com')}>
+                  Accès Gestionnaire
+                </Button>
+              </div>
+            </TabsContent>
+            <TabsContent value="employee" className="mt-4">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input placeholder="nom@exemple.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Mot de passe</FormLabel>
+                        <FormControl>
+                          <Input type="password" placeholder="••••••••" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button disabled={isLoading} className="w-full" type="submit">
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Connexion en cours...
+                      </>
+                    ) : (
+                      "Se connecter"
+                    )}
+                  </Button>
+                </form>
+              </Form>
+
+              <div className="relative mt-4">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t"></span>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-card px-2 text-muted-foreground">
+                    Compte de démonstration
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid gap-2 mt-4">
+                <Button variant="outline" type="button" onClick={() => demoLogin('employee@example.com')}>
+                  Accès Employé
+                </Button>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>

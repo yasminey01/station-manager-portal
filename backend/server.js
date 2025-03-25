@@ -15,6 +15,7 @@ const stockEntriesRoutes = require('./routes/stockEntries.routes');
 const pumpsRoutes = require('./routes/pumps.routes');
 const tanksRoutes = require('./routes/tanks.routes');
 const usersRoutes = require('./routes/users.routes');
+const authRoutes = require('./routes/auth.routes'); // Ajouté
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -42,6 +43,7 @@ app.use('/api/stock-entries', stockEntriesRoutes);
 app.use('/api/pumps', pumpsRoutes);
 app.use('/api/tanks', tanksRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/auth', authRoutes); // Ajouté
 
 // Route de base
 app.get('/', (req, res) => {

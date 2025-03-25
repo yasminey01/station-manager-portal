@@ -1,7 +1,7 @@
 
-import { useState } from 'react';
-import { useEmployeeAuth } from '@/contexts/EmployeeAuthContext'; // Changed from useAuth to useEmployeeAuth
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useEmployeeAuth } from '@/contexts/EmployeeAuthContext';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Fuel, Loader2, User } from 'lucide-react';
+import { Fuel, Loader2, User, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 
 const formSchema = z.object({
@@ -24,8 +24,9 @@ const formSchema = z.object({
 });
 
 const EmployeeLogin = () => {
-  const { login } = useEmployeeAuth(); // Changed from loginEmployee to login
+  const { login } = useEmployeeAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -36,10 +37,20 @@ const EmployeeLogin = () => {
     },
   });
 
+  // Récupérer les infos de connexion pré-remplies si disponibles
+  useEffect(() => {
+    if (location.state?.email) {
+      form.setValue('email', location.state.email);
+      if (location.state.password) {
+        form.setValue('password', location.state.password);
+      }
+    }
+  }, [location.state, form]);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setIsLoading(true);
-      await login(values.email, values.password); // Changed from loginEmployee to login
+      await login(values.email, values.password);
       navigate('/employee/attendance');
     } catch (error) {
       console.error('Login failed:', error);
@@ -126,7 +137,8 @@ const EmployeeLogin = () => {
               Accès Employé
             </Button>
             <Button variant="outline" type="button" onClick={() => navigate('/login')}>
-              Accès Administrateur / Gestionnaire
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Retour à la page de connexion
             </Button>
           </div>
         </div>

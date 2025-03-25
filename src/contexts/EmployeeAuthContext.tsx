@@ -81,7 +81,7 @@ export const EmployeeAuthProvider = ({ children }: { children: ReactNode }) => {
     if (!employee) return false;
     
     try {
-      const response = await authService.checkInEmployee(employee.idEmployee); // Changed from id to idEmployee
+      const response = await authService.checkInEmployee(employee.idEmployee);
       if (response.success) {
         setEmployee(response.data);
         toast.success('Pointage d\'entrée enregistré');
@@ -100,7 +100,7 @@ export const EmployeeAuthProvider = ({ children }: { children: ReactNode }) => {
     if (!employee) return false;
     
     try {
-      const response = await authService.checkOutEmployee(employee.idEmployee); // Changed from id to idEmployee
+      const response = await authService.checkOutEmployee(employee.idEmployee);
       if (response.success) {
         setEmployee(response.data);
         toast.success('Pointage de sortie enregistré');
