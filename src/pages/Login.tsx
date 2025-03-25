@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useEmployeeAuth } from '@/contexts/EmployeeAuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -31,6 +32,7 @@ const formSchema = z.object({
 
 const Login = () => {
   const { login } = useAuth();
+  const { login: employeeLogin } = useEmployeeAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("admin");
@@ -48,8 +50,8 @@ const Login = () => {
       setIsLoading(true);
       
       if (activeTab === "employee") {
-        // Rediriger vers la page de connexion employé
-        navigate('/employee/login', { state: { email: values.email, password: values.password } });
+        await employeeLogin(values.email, values.password);
+        navigate('/employee/attendance');
         return;
       }
       
@@ -84,16 +86,21 @@ const Login = () => {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="admin" className="flex items-center">
                 <Fuel className="h-4 w-4 mr-2" />
-                Admin / Manager
+                Admin
+              </TabsTrigger>
+              <TabsTrigger value="manager" className="flex items-center">
+                <Fuel className="h-4 w-4 mr-2" />
+                Manager
               </TabsTrigger>
               <TabsTrigger value="employee" className="flex items-center">
                 <User className="h-4 w-4 mr-2" />
                 Employé
               </TabsTrigger>
             </TabsList>
+            
             <TabsContent value="admin" className="mt-4">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -142,7 +149,7 @@ const Login = () => {
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-card px-2 text-muted-foreground">
-                    Comptes de démonstration
+                    Compte de démonstration
                   </span>
                 </div>
               </div>
@@ -151,11 +158,69 @@ const Login = () => {
                 <Button variant="outline" type="button" onClick={() => demoLogin('admin@example.com')}>
                   Accès Administrateur
                 </Button>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="manager" className="mt-4">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input placeholder="nom@exemple.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Mot de passe</FormLabel>
+                        <FormControl>
+                          <Input type="password" placeholder="••••••••" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button disabled={isLoading} className="w-full" type="submit">
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Connexion en cours...
+                      </>
+                    ) : (
+                      "Se connecter"
+                    )}
+                  </Button>
+                </form>
+              </Form>
+
+              <div className="relative mt-4">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t"></span>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-card px-2 text-muted-foreground">
+                    Compte de démonstration
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid gap-2 mt-4">
                 <Button variant="outline" type="button" onClick={() => demoLogin('manager@example.com')}>
                   Accès Gestionnaire
                 </Button>
               </div>
             </TabsContent>
+            
             <TabsContent value="employee" className="mt-4">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
