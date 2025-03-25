@@ -25,8 +25,8 @@ const ProfilePage = () => {
     firstName: user?.firstName || '',
     lastName: user?.lastName || '',
     email: user?.email || '',
-    telephone: user?.telephone || '',
-    photoUrl: user?.photoUrl || '',
+    telephone: '', // Default empty string since it's not in the User type
+    photoUrl: '',  // Default empty string since it's not in the User type
   });
   
   const [passwordData, setPasswordData] = useState({
@@ -137,7 +137,7 @@ const ProfilePage = () => {
                     <h3 className="font-medium text-lg">{profileData.firstName} {profileData.lastName}</h3>
                     <p className="text-sm text-muted-foreground">{profileData.email}</p>
                     <p className="text-sm text-muted-foreground">
-                      Rôle: <span className="text-primary font-medium">Administrateur</span>
+                      Rôle: <span className="text-primary font-medium">{user?.role === 'admin' ? 'Administrateur' : 'Gestionnaire'}</span>
                     </p>
                   </div>
                 </div>

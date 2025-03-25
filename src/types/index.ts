@@ -5,6 +5,8 @@ export interface User {
   firstName: string;
   lastName: string;
   role: 'admin' | 'manager' | 'employee';
+  telephone?: string;
+  photoUrl?: string;
 }
 
 // Station types
