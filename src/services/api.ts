@@ -4,7 +4,7 @@ import { User, Station, Employee, Sale, Product, Supplier, StockEntry, Pump, Tan
 const API_URL = 'http://localhost:5000/api';
 
 // Fonction générique pour les requêtes API
-async function fetchApi<T>(
+export default async function fetchApi<T>(
   endpoint: string, 
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET', 
   data?: any
@@ -80,10 +80,10 @@ export const productService = {
   delete: (id: number) => fetchApi<void>(`/products/${id}`, 'DELETE'),
 };
 
-export default {
-  user: userService,
-  station: stationService,
-  employee: employeeService,
-  sale: saleService,
-  product: productService,
+export {
+  userService,
+  stationService,
+  employeeService,
+  saleService,
+  productService,
 };

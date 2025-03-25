@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useEmployeeAuth } from '@/contexts/EmployeeAuthContext'; // Changed from useAuth to useEmployeeAuth
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,7 +24,7 @@ const formSchema = z.object({
 });
 
 const EmployeeLogin = () => {
-  const { loginEmployee } = useAuth();
+  const { login } = useEmployeeAuth(); // Changed from loginEmployee to login
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,7 +39,7 @@ const EmployeeLogin = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setIsLoading(true);
-      await loginEmployee(values.email, values.password);
+      await login(values.email, values.password); // Changed from loginEmployee to login
       navigate('/employee/attendance');
     } catch (error) {
       console.error('Login failed:', error);
