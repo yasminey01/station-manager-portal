@@ -30,14 +30,18 @@ export const reportService = {
     // Données pour le tableau
     const body = sales.map((sale, index) => [
       (index + 1).toString(),
-      sale.saleDate ? format(new Date(sale.saleDate), 'dd/MM/yyyy', { locale: fr }) : 'N/A',
-      sale.product?.name || 'N/A',
-      sale.quantity?.toString() || '0',
-      `${sale.unitPrice?.toFixed(2) || '0.00'} €`,
-      `${sale.totalAmount?.toFixed(2) || '0.00'} €`,
-      sale.customer || 'Client occasionnel',
-      sale.employee?.name || 'N/A',
-      sale.station?.name || 'N/A',
+      sale.dateVente ? format(new Date(sale.dateVente), 'dd/MM/yyyy', { locale: fr }) : 'N/A',
+      // Since product is not directly available, use a placeholder
+      'N/A', // Product name would go here
+      sale.quantiteVente?.toString() || '0',
+      // unitPrice is not available, so we calculate it if possible
+      sale.montant && sale.quantiteVente ? `${(sale.montant / sale.quantiteVente).toFixed(2)} €` : '0.00 €',
+      `${sale.montant?.toFixed(2) || '0.00'} €`,
+      'Client occasionnel', // Customer info not available in the Sale type
+      // Employee name not directly available, use a placeholder
+      'N/A', // Employee name would go here
+      // Station name not directly available, use a placeholder
+      'N/A', // Station name would go here
     ]);
     
     // Configuration du tableau
@@ -68,14 +72,14 @@ export const reportService = {
     // Données pour le tableau Excel
     const data = sales.map((sale, index) => ({
       '#': index + 1,
-      'Date': sale.saleDate ? format(new Date(sale.saleDate), 'dd/MM/yyyy', { locale: fr }) : 'N/A',
-      'Produit': sale.product?.name || 'N/A',
-      'Quantité': sale.quantity || 0,
-      'Prix unitaire': sale.unitPrice || 0,
-      'Montant total': sale.totalAmount || 0,
-      'Client': sale.customer || 'Client occasionnel',
-      'Employé': sale.employee?.name || 'N/A',
-      'Station': sale.station?.name || 'N/A',
+      'Date': sale.dateVente ? format(new Date(sale.dateVente), 'dd/MM/yyyy', { locale: fr }) : 'N/A',
+      'Produit': 'N/A', // Product name would go here
+      'Quantité': sale.quantiteVente || 0,
+      'Prix unitaire': sale.montant && sale.quantiteVente ? (sale.montant / sale.quantiteVente) : 0,
+      'Montant total': sale.montant || 0,
+      'Client': 'Client occasionnel', // Customer info not available
+      'Employé': 'N/A', // Employee name would go here
+      'Station': 'N/A', // Station name would go here
     }));
     
     // Créer une feuille de calcul
