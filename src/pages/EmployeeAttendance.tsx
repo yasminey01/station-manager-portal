@@ -43,8 +43,10 @@ const EmployeeAttendance = () => {
       const startDateStr = format(startOfMonth, 'yyyy-MM-dd');
       const endDateStr = format(endOfMonth, 'yyyy-MM-dd');
       
+      // Convert employee.idEmployee to string if it's a number
+      const employeeId = employee.idEmployee.toString();
       const response = await authService.getEmployeeAttendance(
-        employee.idEmployee, 
+        employeeId, 
         startDateStr,
         endDateStr
       );

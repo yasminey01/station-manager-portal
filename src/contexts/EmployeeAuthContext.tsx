@@ -81,7 +81,9 @@ export const EmployeeAuthProvider = ({ children }: { children: ReactNode }) => {
     if (!employee) return false;
     
     try {
-      const response = await authService.checkInEmployee(employee.idEmployee);
+      // Convert employee.idEmployee to string if it's a number
+      const employeeId = employee.idEmployee.toString();
+      const response = await authService.checkInEmployee(employeeId);
       if (response.success) {
         setEmployee(response.data);
         toast.success('Pointage d\'entrée enregistré');
@@ -100,7 +102,9 @@ export const EmployeeAuthProvider = ({ children }: { children: ReactNode }) => {
     if (!employee) return false;
     
     try {
-      const response = await authService.checkOutEmployee(employee.idEmployee);
+      // Convert employee.idEmployee to string if it's a number
+      const employeeId = employee.idEmployee.toString();
+      const response = await authService.checkOutEmployee(employeeId);
       if (response.success) {
         setEmployee(response.data);
         toast.success('Pointage de sortie enregistré');
