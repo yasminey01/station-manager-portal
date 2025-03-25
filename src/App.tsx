@@ -28,6 +28,8 @@ import Profile from '@/pages/Profile';
 import Settings from '@/pages/Settings';
 import Attendance from '@/pages/Attendance';
 import Users from '@/pages/Users';
+import EmployeeAttendance from '@/pages/EmployeeAttendance';
+import EmployeeLogin from '@/pages/EmployeeLogin';
 
 import './App.css';
 
@@ -41,6 +43,7 @@ function App() {
         <AuthProvider>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/employee/login" element={<EmployeeLogin />} />
             <Route path="/" element={<AppLayout />}>
               <Route index element={<Navigate to="/dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
@@ -54,6 +57,7 @@ function App() {
               <Route path="employees/:id/edit" element={<EmployeeForm />} />
               <Route path="schedules" element={<Schedules />} />
               <Route path="attendance" element={<Attendance />} />
+              <Route path="employee/attendance" element={<EmployeeAttendance />} />
               <Route path="pumps-and-tanks" element={<PumpsAndTanks />} />
               <Route path="pumps/new" element={<PumpForm />} />
               <Route path="pumps/:id/edit" element={<PumpForm />} />

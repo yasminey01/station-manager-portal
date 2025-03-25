@@ -101,7 +101,7 @@ const Reports = () => {
       } else {
         setDateRange({
           from: dateRange.from,
-          to: date,
+          to: dateRange.to,
         });
         setShowCalendar(false);
       }

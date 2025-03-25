@@ -16,7 +16,7 @@ const employeeSchema = new mongoose.Schema({
   salary: { type: Number, required: true },
   contractType: { type: String, required: true },
   status: { type: String, enum: ['actif', 'inactif'], default: 'actif' },
-  role: { type: String, enum: ['employee'], default: 'employee' },
+  role: { type: String, enum: ['employee', 'manager', 'admin'], default: 'employee' },
   photoUrl: { type: String },
   isPresent: { type: Boolean, default: false },
   lastCheckIn: { type: Date },
