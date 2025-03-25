@@ -26,6 +26,8 @@ import StockEntries from '@/pages/StockEntries';
 import Reports from '@/pages/Reports';
 import Profile from '@/pages/Profile';
 import Settings from '@/pages/Settings';
+import Attendance from '@/pages/Attendance';
+import Users from '@/pages/Users';
 
 import './App.css';
 
@@ -51,6 +53,7 @@ function App() {
               <Route path="employees/new" element={<EmployeeForm />} />
               <Route path="employees/:id/edit" element={<EmployeeForm />} />
               <Route path="schedules" element={<Schedules />} />
+              <Route path="attendance" element={<Attendance />} />
               <Route path="pumps-and-tanks" element={<PumpsAndTanks />} />
               <Route path="pumps/new" element={<PumpForm />} />
               <Route path="pumps/:id/edit" element={<PumpForm />} />
@@ -70,9 +73,10 @@ function App() {
               {/* Route pour les rapports */}
               <Route path="reports" element={<Reports />} />
               
-              {/* Nouvelles routes pour le profil et les paramètres */}
+              {/* Routes pour le profil, les paramètres et la gestion des utilisateurs */}
               <Route path="profile" element={<Profile />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="users" element={<Users />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -7,7 +8,8 @@ import {
   Filter, 
   Edit, 
   Trash, 
-  AlertTriangle 
+  AlertTriangle,
+  XCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -47,8 +49,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
 import { Pump, Tank } from '@/types';
 import { pumps, tanks, stations } from '@/services/mockDatabase';
@@ -61,19 +67,65 @@ const PumpsAndTanks = () => {
   const [tanksData, setTanksData] = useState<Tank[]>(tanks);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<{ id: number, type: 'pump' | 'tank' } | null>(null);
+  const [filters, setFilters] = useState({
+    status: '',
+    station: '',
+  });
+  const [showFilters, setShowFilters] = useState(false);
 
-  const filteredPumps = pumpsData.filter(pump => 
-    pump.nomPompe.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    pump.statut.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter pumps based on search query and filters
+  const filteredPumps = pumpsData.filter(pump => {
+    // Search filter
+    const matchesSearch = 
+      pump.nomPompe.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      pump.statut.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    // Status filter
+    const matchesStatus = filters.status ? pump.statut === filters.status : true;
+    
+    // Station filter
+    const matchesStation = filters.station 
+      ? pump.idStation?.toString() === filters.station 
+      : true;
+    
+    return matchesSearch && matchesStatus && matchesStation;
+  });
 
-  const filteredTanks = tanksData.filter(tank => 
-    tank.typeCarburant.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    tank.statut.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter tanks based on search query and filters
+  const filteredTanks = tanksData.filter(tank => {
+    // Search filter
+    const matchesSearch = 
+      tank.typeCarburant.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tank.statut.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    // Status filter
+    const matchesStatus = filters.status ? tank.statut === filters.status : true;
+    
+    // Station filter
+    const matchesStation = filters.station 
+      ? tank.idStation?.toString() === filters.station 
+      : true;
+    
+    return matchesSearch && matchesStatus && matchesStation;
+  });
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleFilterChange = (key: string, value: string) => {
+    setFilters(prev => ({
+      ...prev,
+      [key]: value
+    }));
+  };
+
+  const clearFilters = () => {
+    setFilters({
+      status: '',
+      station: ''
+    });
+    setShowFilters(false);
   };
 
   const handleDelete = (id: number, type: 'pump' | 'tank') => {
@@ -138,10 +190,76 @@ const PumpsAndTanks = () => {
             onChange={handleSearch}
           />
         </div>
-        <Button variant="outline" size="icon">
-          <Filter className="h-4 w-4" />
-          <span className="sr-only">Filtrer</span>
-        </Button>
+        <Popover open={showFilters} onOpenChange={setShowFilters}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="icon" className="relative">
+              <Filter className="h-4 w-4" />
+              {(filters.status || filters.station) && (
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full" />
+              )}
+              <span className="sr-only">Filtrer</span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80" align="end">
+            <div className="space-y-4">
+              <h4 className="font-medium">Filtres</h4>
+              <div className="space-y-2">
+                <h5 className="text-sm font-medium">Statut</h5>
+                <div className="flex gap-2">
+                  <Button 
+                    variant={filters.status === 'actif' ? 'default' : 'outline'} 
+                    size="sm"
+                    onClick={() => handleFilterChange('status', filters.status === 'actif' ? '' : 'actif')}
+                  >
+                    Actif
+                  </Button>
+                  <Button 
+                    variant={filters.status === 'inactif' ? 'default' : 'outline'} 
+                    size="sm"
+                    onClick={() => handleFilterChange('status', filters.status === 'inactif' ? '' : 'inactif')}
+                  >
+                    Inactif
+                  </Button>
+                  <Button 
+                    variant={filters.status === 'maintenance' ? 'default' : 'outline'} 
+                    size="sm"
+                    onClick={() => handleFilterChange('status', filters.status === 'maintenance' ? '' : 'maintenance')}
+                  >
+                    Maintenance
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <h5 className="text-sm font-medium">Station</h5>
+                <div className="grid grid-cols-2 gap-2">
+                  {stations.slice(0, 4).map(station => (
+                    <Button 
+                      key={station.idStation}
+                      variant={filters.station === station.idStation.toString() ? 'default' : 'outline'} 
+                      size="sm"
+                      onClick={() => handleFilterChange('station', 
+                        filters.station === station.idStation.toString() ? '' : station.idStation.toString()
+                      )}
+                    >
+                      {station.nomStation}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="flex justify-between">
+                <Button variant="outline" size="sm" onClick={clearFilters}>
+                  <XCircle className="h-4 w-4 mr-2" />
+                  Effacer les filtres
+                </Button>
+                <Button size="sm" onClick={() => setShowFilters(false)}>
+                  Appliquer
+                </Button>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
 
       <Tabs defaultValue="pumps" className="w-full" onValueChange={setActiveTab}>
@@ -166,7 +284,7 @@ const PumpsAndTanks = () => {
                   </div>
                   <h3 className="mt-4 text-lg font-semibold">Aucune pompe trouvée</h3>
                   <p className="text-muted-foreground">
-                    Aucune pompe ne correspond à votre recherche.
+                    Aucune pompe ne correspond à votre recherche ou à vos filtres.
                   </p>
                 </div>
               ) : (
@@ -199,38 +317,22 @@ const PumpsAndTanks = () => {
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                  <span className="sr-only">Ouvrir le menu</span>
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    className="h-4 w-4"
-                                  >
-                                    <path d="M10 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm0 5.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm1.5 7a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z" />
-                                  </svg>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem asChild>
-                                  <Link to={`/pumps/${pump.idPompe}/edit`} className="flex items-center cursor-pointer">
-                                    <Edit className="h-4 w-4 mr-2" />
-                                    Modifier
-                                  </Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onClick={() => handleDelete(pump.idPompe, 'pump')}
-                                  className="text-destructive focus:text-destructive flex items-center cursor-pointer"
-                                >
-                                  <Trash className="h-4 w-4 mr-2" />
-                                  Supprimer
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                            <div className="flex justify-end">
+                              <Button variant="ghost" size="icon" asChild>
+                                <Link to={`/pumps/${pump.idPompe}/edit`}>
+                                  <Edit className="h-4 w-4" />
+                                  <span className="sr-only">Modifier</span>
+                                </Link>
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="icon"
+                                onClick={() => handleDelete(pump.idPompe, 'pump')}
+                              >
+                                <Trash className="h-4 w-4 text-destructive" />
+                                <span className="sr-only">Supprimer</span>
+                              </Button>
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -258,7 +360,7 @@ const PumpsAndTanks = () => {
                   </div>
                   <h3 className="mt-4 text-lg font-semibold">Aucune citerne trouvée</h3>
                   <p className="text-muted-foreground">
-                    Aucune citerne ne correspond à votre recherche.
+                    Aucune citerne ne correspond à votre recherche ou à vos filtres.
                   </p>
                 </div>
               ) : (
@@ -305,38 +407,22 @@ const PumpsAndTanks = () => {
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                  <span className="sr-only">Ouvrir le menu</span>
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    className="h-4 w-4"
-                                  >
-                                    <path d="M10 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm0 5.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm1.5 7a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z" />
-                                  </svg>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem asChild>
-                                  <Link to={`/tanks/${tank.idCiterne}/edit`} className="flex items-center cursor-pointer">
-                                    <Edit className="h-4 w-4 mr-2" />
-                                    Modifier
-                                  </Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onClick={() => handleDelete(tank.idCiterne, 'tank')}
-                                  className="text-destructive focus:text-destructive flex items-center cursor-pointer"
-                                >
-                                  <Trash className="h-4 w-4 mr-2" />
-                                  Supprimer
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                            <div className="flex justify-end">
+                              <Button variant="ghost" size="icon" asChild>
+                                <Link to={`/tanks/${tank.idCiterne}/edit`}>
+                                  <Edit className="h-4 w-4" />
+                                  <span className="sr-only">Modifier</span>
+                                </Link>
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="icon"
+                                onClick={() => handleDelete(tank.idCiterne, 'tank')}
+                              >
+                                <Trash className="h-4 w-4 text-destructive" />
+                                <span className="sr-only">Supprimer</span>
+                              </Button>
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}

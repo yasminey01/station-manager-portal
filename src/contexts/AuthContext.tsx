@@ -43,12 +43,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkAuth();
   }, []);
 
-  // For demo purposes, using mock data
+  // Pour la démo, utilisation de données fictives
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     
     try {
-      // In a real app, this would be an API call
+      // Dans une application réelle, ce serait un appel API
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       if (email === 'admin@example.com' && password === 'password') {
@@ -58,18 +58,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           firstName: 'Admin',
           lastName: 'User',
           role: 'admin',
+          telephone: '+212 654 987 321',
+          photoUrl: ''
         };
         
         setUser(userData);
         localStorage.setItem('user', JSON.stringify(userData));
         toast.success('Connexion réussie');
-      } else if (email === 'manager@example.com' && password === 'password') {
+      } 
+      else if (email === 'manager@example.com' && password === 'password') {
         const userData: User = {
           id: 2,
           email: 'manager@example.com',
           firstName: 'Manager',
           lastName: 'User',
           role: 'manager',
+          telephone: '+212 654 123 789',
+          photoUrl: ''
+        };
+        
+        setUser(userData);
+        localStorage.setItem('user', JSON.stringify(userData));
+        toast.success('Connexion réussie');
+      }
+      else if (email === 'employee@example.com' && password === 'password') {
+        const userData: User = {
+          id: 3,
+          email: 'employee@example.com',
+          firstName: 'John',
+          lastName: 'Smith',
+          role: 'employee',
+          telephone: '+212 654 456 789',
+          photoUrl: ''
         };
         
         setUser(userData);

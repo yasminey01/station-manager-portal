@@ -1,3 +1,4 @@
+
 // User types
 export interface User {
   id: number;
@@ -31,6 +32,7 @@ export interface Employee {
   firstName: string;
   lastName: string;
   phone: string;
+  email: string;
   gender: 'homme' | 'femme';
   birthDate: string;
   address: string;
@@ -39,6 +41,11 @@ export interface Employee {
   salary: number;
   contractType: string;
   status: string;
+  role?: 'employee';
+  photoUrl?: string;
+  isPresent?: boolean;
+  lastCheckIn?: string;
+  lastCheckOut?: string;
 }
 
 // Schedule types
@@ -158,4 +165,28 @@ export interface StockEntry {
   dateEntree: string;
   quantite: number;
   prixAchat: number;
+}
+
+// Attendance types
+export interface Attendance {
+  id: number;
+  idEmployee: number;
+  date: string;
+  checkIn: string;
+  checkOut?: string;
+  status: 'present' | 'absent' | 'late' | 'halfDay';
+  comments?: string;
+}
+
+// System settings types
+export interface SystemSettings {
+  id: number;
+  companyName: string;
+  logo?: string;
+  timezone: string;
+  taxRate: number;
+  currency: string;
+  paymentMethods: ('Espèces' | 'Carte' | 'Virement')[];
+  notifications: boolean;
+  lastBackup?: string;
 }
