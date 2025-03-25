@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { format, subDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -54,7 +53,7 @@ import {
   Calendar as CalendarIcon,
   Download,
   FileSpreadsheet,
-  FilePdf,
+  FileText,
   BarChart3,
   PieChart as PieChartIcon,
   LineChart,
@@ -62,7 +61,6 @@ import {
   Package
 } from 'lucide-react';
 
-// Données fictives pour les graphiques
 const salesData = [
   { name: 'Lun', SP95: 4000, SP98: 2400, Gazole: 5400 },
   { name: 'Mar', SP95: 3000, SP98: 1398, Gazole: 4200 },
@@ -115,7 +113,6 @@ const Reports = () => {
   };
 
   const generateRandomReportData = () => {
-    // Simulation de données pour différentes sections du rapport
     const report = {
       period: getFormattedDateRange(),
       totalSales: Math.floor(Math.random() * 50000) + 10000,
@@ -140,13 +137,10 @@ const Reports = () => {
   };
 
   const generatePDF = () => {
-    // Simuler la génération d'un PDF
     const reportData = generateRandomReportData();
     console.log("Génération d'un rapport PDF avec les données:", reportData);
     
-    // Simuler un délai de génération
     setTimeout(() => {
-      // Créer un objet Blob contenant du texte
       const content = `
         Rapport de ${reportType === 'sales' ? 'Ventes' : reportType === 'inventory' ? 'Inventaire' : 'Performances'}
         Période: ${reportData.period}
@@ -171,14 +165,12 @@ const Reports = () => {
       const blob = new Blob([content], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       
-      // Créer un lien et simuler un clic
       const a = document.createElement('a');
       a.href = url;
       a.download = `Rapport_${reportType}_${format(new Date(), 'yyyy-MM-dd')}.pdf`;
       document.body.appendChild(a);
       a.click();
       
-      // Nettoyer
       URL.revokeObjectURL(url);
       document.body.removeChild(a);
       
@@ -187,13 +179,10 @@ const Reports = () => {
   };
 
   const generateExcel = () => {
-    // Simuler la génération d'un Excel
     const reportData = generateRandomReportData();
     console.log("Génération d'un rapport Excel avec les données:", reportData);
     
-    // Simuler un délai de génération
     setTimeout(() => {
-      // Créer un objet Blob contenant des données CSV
       const headers = "Type,Valeur\n";
       const rows = [
         `"Total des ventes","${reportData.totalSales} DH"`,
@@ -212,14 +201,12 @@ const Reports = () => {
       const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       
-      // Créer un lien et simuler un clic
       const a = document.createElement('a');
       a.href = url;
       a.download = `Rapport_${reportType}_${format(new Date(), 'yyyy-MM-dd')}.csv`;
       document.body.appendChild(a);
       a.click();
       
-      // Nettoyer
       URL.revokeObjectURL(url);
       document.body.removeChild(a);
       

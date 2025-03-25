@@ -23,4 +23,9 @@ const employeeSchema = new mongoose.Schema({
   lastCheckOut: { type: Date }
 }, { timestamps: true });
 
+// Virtual for full name
+employeeSchema.virtual('fullName').get(function() {
+  return `${this.firstName} ${this.lastName}`;
+});
+
 module.exports = mongoose.model('Employee', employeeSchema);

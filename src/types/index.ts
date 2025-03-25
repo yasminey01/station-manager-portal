@@ -172,7 +172,7 @@ export interface Attendance {
   id: number;
   idEmployee: number;
   date: string;
-  checkIn: string;
+  checkIn?: string;
   checkOut?: string;
   status: 'present' | 'absent' | 'late' | 'halfDay';
   comments?: string;

@@ -84,7 +84,8 @@ export const employees: Employee[] = [
     cnssNumber: 'CNSS123456',
     salary: 5200,
     contractType: 'CDI',
-    status: 'actif'
+    status: 'actif',
+    email: 'mohammed.alaoui@example.com'
   },
   {
     idEmployee: 2,
@@ -99,7 +100,8 @@ export const employees: Employee[] = [
     cnssNumber: 'CNSS789012',
     salary: 4800,
     contractType: 'CDI',
-    status: 'actif'
+    status: 'actif',
+    email: 'fatima.benali@example.com'
   },
   {
     idEmployee: 3,
@@ -114,7 +116,8 @@ export const employees: Employee[] = [
     cnssNumber: 'CNSS345678',
     salary: 4500,
     contractType: 'CDD',
-    status: 'actif'
+    status: 'actif',
+    email: 'youssef.elkhamlichi@example.com'
   },
   {
     idEmployee: 4,
@@ -129,7 +132,8 @@ export const employees: Employee[] = [
     cnssNumber: 'CNSS901234',
     salary: 5000,
     contractType: 'CDI',
-    status: 'inactif'
+    status: 'inactif',
+    email: 'nadia.tahiri@example.com'
   },
   {
     idEmployee: 5,
@@ -144,7 +148,8 @@ export const employees: Employee[] = [
     cnssNumber: 'CNSS567890',
     salary: 4200,
     contractType: 'CDD',
-    status: 'actif'
+    status: 'actif',
+    email: 'karim.ziani@example.com'
   }
 ];
 
@@ -687,3 +692,4 @@ export const getStockEntriesByProductId = (productId: number): StockEntry[] => {
 export const getStockEntriesBySupplierID = (supplierId: number): StockEntry[] => {
   return stockEntries.filter(entry => entry.idFournisseur === supplierId);
 };
+
