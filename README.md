@@ -1,69 +1,99 @@
-# Welcome to your Lovable project
 
-## Project info
+# StationManager - Application de Gestion de Stations-Service
 
-**URL**: https://lovable.dev/projects/d8335eb9-2153-46c7-a6e4-a7c63ea0dcfe
+## Présentation du Projet
 
-## How can I edit this code?
+### Contexte
+StationManager a été créé pour répondre au besoin croissant d'automatisation et de digitalisation des processus de gestion des stations-service. Face à la complexité grandissante de la gestion quotidienne (employés, stocks, ventes, maintenance), ce logiciel offre une solution centralisée et intuitive.
 
-There are several ways of editing your application.
+### Objectifs Principaux
+- Automatiser la gestion des stations-service et réduire les erreurs humaines
+- Centraliser les données et faciliter l'accès aux informations importantes
+- Optimiser la gestion des employés et des plannings
+- Améliorer le suivi des ventes et la gestion des stocks
+- Faciliter la génération de rapports et l'analyse des données
+- Augmenter l'efficacité opérationnelle globale
 
-**Use Lovable**
+### Méthodologie et Technologies Utilisées
+- **Frontend**: React.js, Typescript, Tailwind CSS, Shadcn UI
+- **Backend**: Express.js, Node.js
+- **Base de données**: MongoDB
+- **Outils supplémentaires**: Git pour le versioning, npm pour la gestion des packages
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d8335eb9-2153-46c7-a6e4-a7c63ea0dcfe) and start prompting.
+## Installation et Lancement du Projet
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prérequis
+- Node.js (v14 ou supérieur)
+- npm (v6 ou supérieur)
+- MongoDB (compte Atlas ou installation locale)
 
-**Use your preferred IDE**
+### Installation
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. Extraire le fichier ZIP dans le dossier de votre choix
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+2. Installer les dépendances frontend
+```bash
+# Dans le dossier racine du projet
+npm install
+```
 
-Follow these steps:
+3. Installer les dépendances backend
+```bash
+# Dans le dossier backend
+cd backend
+npm install
+```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+4. Configurer les variables d'environnement
+   - Renommer le fichier `.env.example` en `.env` dans le dossier backend
+   - Configurer votre URL MongoDB et autres paramètres dans ce fichier
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Lancement de l'Application
 
-# Step 3: Install the necessary dependencies.
-npm i
+1. Démarrer le serveur backend
+```bash
+# Dans le dossier backend
+cd backend
+npm start
+# Ou
+node server.js
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+2. Dans un autre terminal, démarrer l'application frontend
+```bash
+# Dans le dossier racine
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+3. Accéder à l'application
+   - Le frontend sera disponible à l'adresse: http://localhost:5173
+   - L'API backend sera disponible à l'adresse: http://localhost:5000
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Structure du Projet
 
-**Use GitHub Codespaces**
+```
+stationmanager/
+├── backend/              # Code serveur Express.js
+│   ├── models/           # Modèles MongoDB
+│   ├── routes/           # Routes API
+│   ├── .env              # Variables d'environnement
+│   └── server.js         # Point d'entrée du serveur
+├── public/               # Ressources statiques
+├── src/                  # Code source frontend
+│   ├── components/       # Composants React réutilisables
+│   ├── contexts/         # Contextes React (authentification, etc.)
+│   ├── pages/            # Pages de l'application
+│   ├── services/         # Services pour les appels API
+│   └── types/            # Définitions TypeScript
+└── package.json          # Dépendances et scripts
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Utilisation
 
-## What technologies are used for this project?
+1. Se connecter avec un compte administrateur (par défaut: admin@example.com / password)
+2. Naviguer dans les différentes sections via le menu latéral
+3. Gérer les stations, employés, stocks, ventes et générer des rapports
 
-This project is built with .
+## Contact
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/d8335eb9-2153-46c7-a6e4-a7c63ea0dcfe) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+Pour toute question ou assistance, veuillez contacter l'administrateur système.
