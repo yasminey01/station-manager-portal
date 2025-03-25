@@ -1,6 +1,6 @@
 
 import { ApiResponse, Employee, User } from '@/types';
-import fetchApi from './api'; // Changed from import { fetchApi } to import fetchApi
+import fetchApi from './api'; // Import fetchApi as default import
 
 export const authService = {
   loginEmployee: (email: string, password: string) => 
