@@ -313,7 +313,7 @@ const Reports = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem className="cursor-pointer" onClick={generatePDF}>
-              <FilePdf className="mr-2 h-4 w-4" />
+              <FileText className="mr-2 h-4 w-4" />
               Exporter en PDF
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" onClick={generateExcel}>
